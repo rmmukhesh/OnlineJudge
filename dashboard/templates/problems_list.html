@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>All Problems</h1>
+<ul>
+  {% for prob in problems %}
+    <li>
+      <a href="#">{{ prob.title }}</a>
+      <small>({{ prob.created_at|date:"Y-m-d" }})</small>
+    </li>
+  {% empty %}
+    <li>No problems yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
