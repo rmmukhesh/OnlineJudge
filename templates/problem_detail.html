@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ problem.title }}</h1>
+<p>{{ problem.description }}</p>
+<h3>Public Test Cases</h3>
+<ul>
+  {% for tc in public_cases %}
+    <li>Input: <pre>{{ tc.input_data }}</pre> Expected: <pre>{{ tc.expected_output }}</pre></li>
+  {% endfor %}
+</ul>
+<form method="post" action="{% url 'dashboard:submit_solution' problem.id %}">
+  {% csrf_token %}
+  <textarea name="code" rows="15" cols="80"></textarea><br>
+  <button type="submit">Submit</button>
+</form>
+{% endblock %}

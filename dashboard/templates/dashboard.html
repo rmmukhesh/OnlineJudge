@@ -1,33 +1,15 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block content %}
-  <h1>Dashboard</h1>
-
-  <section>
-    <h2>All Problems</h2>
-    <ul>
-      {% for prob in problems %}
-        <li><a href="#">{{ prob.title }}</a> ({{ prob.created_at|date:"Y-m-d" }})</li>
-      {% empty %}
-        <li>No problems yet.</li>
-      {% endfor %}
-    </ul>
-  </section>
-
-  <hr>
-
-  <section>
-    <h2>My Submissions</h2>
-    <table>
-      <tr><th>Problem</th><th>Status</th><th>When</th></tr>
-      {% for sub in submissions %}
-        <tr>
-          <td>{{ sub.problem.title }}</td>
-          <td>{{ sub.status }}</td>
-          <td>{{ sub.submitted_at|date:"Y-m-d H:i" }}</td>
-        </tr>
-      {% empty %}
-        <tr><td colspan="3">No submissions yet.</td></tr>
-      {% endfor %}
-    </table>
-  </section>
+<h1>Dashboard</h1>
+<ul>
+  {% for p in problems %}
+    <li><a href="{% url 'dashboard:problem_detail' p.id %}">{{ p.title }}</a></li>
+  {% empty %}<li>No problems yet.</li>{% endfor %}
+</ul>
+<h2>Your Submissions</h2>
+<ul>
+  {% for s in submissions %}
+    <li>{{ s.problem.title }} — {{ s.get_status_display }}{% if s.status == 'R' or s.status == 'E' or s.status == 'T' %} (Details: {{ s.verdict_details }}){% endif %} at {{ s.submitted_at }} </li>
+  {% empty %}<li>No submissions.</li>{% endfor %}
+</ul>
 {% endblock %}
