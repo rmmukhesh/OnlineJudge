@@ -1,16 +1,38 @@
 {% extends "base.html" %}
+
 {% block content %}
-<h1>{{ problem.title }}</h1>
-<p>{{ problem.description }}</p>
-<h3>Public Test Cases</h3>
-<ul>
-  {% for tc in public_cases %}
-    <li>Input: <pre>{{ tc.input_data }}</pre> Expected: <pre>{{ tc.expected_output }}</pre></li>
-  {% endfor %}
-</ul>
-<form method="post" action="{% url 'dashboard:submit_solution' problem.id %}">
-  {% csrf_token %}
-  <textarea name="code" rows="15" cols="80"></textarea><br>
-  <button type="submit">Submit</button>
-</form>
+  <h1>{{ problem.title }}</h1>
+  <p>{{ problem.description }}</p>
+
+  <h3>Public Test Cases</h3>
+  <ul>
+    {% for tc in public_cases %}
+      <li>
+        <strong>Input:</strong>
+        <pre>{{ tc.input_data }}</pre>
+        <strong>Expected:</strong>
+        <pre>{{ tc.expected_output }}</pre>
+      </li>
+    {% empty %}
+      <li>No public examples available.</li>
+    {% endfor %}
+  </ul>
+
+  <h3>Submit Your Solution</h3>
+  <form method="post" action="{% url 'dashboard:submit_solution' problem.id %}">
+    {% csrf_token %}
+
+    <label for="lang">Language:</label>
+    <select name="language" id="lang">
+      <option value="CPP">C++</option>
+      <option value="PY">Python</option>
+    </select>
+    <br><br>
+
+    <label for="code">Your Code:</label><br>
+    <textarea name="code" id="code" rows="15" cols="80"></textarea>
+    <br><br>
+
+    <button type="submit">Submit</button>
+  </form>
 {% endblock %}

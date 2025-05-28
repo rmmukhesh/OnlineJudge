@@ -39,9 +39,15 @@ class Submission(models.Model):
         ('T', 'Timed Out'),
     ]
 
+    LANG_CHOICES = [
+        ('CPP', 'C++'),
+        ('PY', 'Python'),
+    ]
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
     code = models.TextField()
+    language = models.CharField(max_length=3, choices=LANG_CHOICES, default='PY', help_text="Select your language")
     submitted_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='P')
     verdict_details = models.TextField(blank=True)

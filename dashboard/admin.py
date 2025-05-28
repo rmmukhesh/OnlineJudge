@@ -20,6 +20,6 @@ class TestCaseAdmin(admin.ModelAdmin):
 
 @admin.register(Submission)
 class SubmissionAdmin(admin.ModelAdmin):
-    list_display = ('user', 'problem', 'status', 'submitted_at')
-    list_filter = ('status', 'problem')
+    list_display = ('user', 'problem', 'get_language_display', 'status', 'submitted_at')
+    list_filter = ('status', 'problem', 'language')
     readonly_fields = ('verdict_details',)

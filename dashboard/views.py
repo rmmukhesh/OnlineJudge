@@ -23,8 +23,9 @@ def submit_solution(request, pk):
     problem = Problem.objects.get(pk=pk)
     if request.method == 'POST':
         code = request.POST['code']
-        sub = Submission.objects.create(user=request.user, problem=problem, code=code)
-        verdict, details = run_testcases(problem, code)
+        language = request.POST.get('language', 'CPP')
+        sub = Submission.objects.create(user=request.user, problem=problem, code=code, language=language)
+        verdict, details = run_testcases(problem, code, language)
         sub.status = verdict
         sub.verdict_details = details
         sub.save()
@@ -33,35 +34,59 @@ def submit_solution(request, pk):
 
 # Helper to execute code and compare outputs
 
-def run_testcases(problem, code_text):
+def run_testcases(problem, code_text, language):
     verdict = 'A'
     details = ''
-    for tc in problem.testcases.filter(is_public=False):
-        with tempfile.NamedTemporaryFile(delete=False, suffix='.py') as f:
-            f.write(code_text.encode())
-            fname = f.name
-        try:
+
+    suffix = '.py' if language == 'PY' else '.cpp'
+    with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as src:
+        src.write(code_text.encode())
+        src_name = src.name
+
+    exe_path = None
+    try:
+        if language == 'CPP':
+            exe_path = src_name + '.out'
+            compile_proc = subprocess.run(
+                ['g++', src_name, '-o', exe_path],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                timeout=5
+            )
+            if compile_proc.returncode != 0:
+                verdict = 'E'
+                details = f"Compilation error:\n{compile_proc.stderr.decode()}"
+                return verdict, details
+
+        run_cmd = ['python3', src_name] if language == 'PY' else [exe_path]
+ 
+        for tc in problem.testcases.filter(is_public=False):
             proc = subprocess.run(
-                ['python3', fname],
+                run_cmd,
                 input=tc.input_data.encode(),
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 timeout=2
             )
-            actual = proc.stdout.decode().strip()
+            actual   = proc.stdout.decode().strip()
             expected = tc.expected_output.strip()
+
             if proc.returncode != 0:
                 verdict = 'E'
-                details += f"Error in TC {tc.id}: {proc.stderr.decode()}\n"
+                details = f"Runtime error on TC #{tc.id}:\n{proc.stderr.decode()}"
                 break
             if actual != expected:
                 verdict = 'R'
-                details += f"TC {tc.id} failed: expected '{expected}', got '{actual}'\n"
+                details = f"TC #{tc.id} failed: expected '{expected}', got '{actual}'"
                 break
-        except subprocess.TimeoutExpired:
-            verdict = 'T'
-            details += f"TC {tc.id} timed out.\n"
-            break
-        finally:
-            os.remove(fname)
+
+    except subprocess.TimeoutExpired:
+        verdict = 'T'
+        details = f"Timed out on a test case."
+
+    finally:
+        os.remove(src_name)
+        if exe_path and os.path.exists(exe_path):
+            os.remove(exe_path)
+
     return verdict, details
