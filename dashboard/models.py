@@ -52,5 +52,8 @@ class Submission(models.Model):
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='P')
     verdict_details = models.TextField(blank=True)
 
+    class Meta:
+        ordering = ['-submitted_at']
+
     def __str__(self):
         return f"{self.user.username} - {self.problem.title} - {self.get_status_display()}"

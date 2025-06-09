@@ -55,7 +55,7 @@ def run_testcases(problem, code_text, language):
             )
             if compile_proc.returncode != 0:
                 verdict = 'E'
-                details = f"Compilation error:\n{compile_proc.stderr.decode()}"
+                details = f"Compilation error"
                 return verdict, details
 
         run_cmd = ['python3', src_name] if language == 'PY' else [exe_path]
@@ -73,16 +73,16 @@ def run_testcases(problem, code_text, language):
 
             if proc.returncode != 0:
                 verdict = 'E'
-                details = f"Runtime error on TC #{tc.id}:\n{proc.stderr.decode()}"
+                details = f"Runtime error on TC #{tc.id}"
                 break
             if actual != expected:
                 verdict = 'R'
-                details = f"TC #{tc.id} failed: expected '{expected}', got '{actual}'"
+                details = f"Wrong Answer on Test Case {tc.id}"
                 break
 
     except subprocess.TimeoutExpired:
         verdict = 'T'
-        details = f"Timed out on a test case."
+        details = f"Time Limit Exceeded on Test Case {tc.id}"
 
     finally:
         os.remove(src_name)

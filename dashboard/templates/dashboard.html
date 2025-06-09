@@ -1,33 +1,72 @@
 {% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}Dashboard – MyJudge{% endblock %}
 
 {% block content %}
-  <h1>Dashboard</h1>
+  <h1 class="mb-4">Dashboard</h1>
 
-  <h2>Available Problems</h2>
-  <ul>
-    {% for p in problems %}
-      <li>
-        <a href="{% url 'dashboard:problem_detail' p.id %}">{{ p.title }}</a>
-      </li>
-    {% empty %}
-      <li>No problems have been created yet.</li>
-    {% endfor %}
-  </ul>
+  <!-- Problems List -->
+  <div class="card mb-4">
+    <div class="card-header">Available Problems</div>
+    <ul class="list-group list-group-flush">
+      {% for p in problems %}
+        <li class="list-group-item">
+          <a href="{% url 'dashboard:problem_detail' p.id %}">{{ p.title }}</a>
+          <span class="badge bg-secondary float-end">{{ p.created_at|date:"M d, Y" }}</span>
+        </li>
+      {% empty %}
+        <li class="list-group-item">No problems have been created yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
 
-  <h2>Your Submissions</h2>
-  <ul>
-    {% for s in submissions %}
-      <li>
-        {{ s.problem.title }}
-        — <strong>{{ s.get_language_display }}</strong>
-        — {{ s.get_status_display }}
-        {% if s.status == 'R' or s.status == 'E' or s.status == 'T' %}
-          (Details: {{ s.verdict_details }})
-        {% endif %}
-        at {{ s.submitted_at }}
-      </li>
-    {% empty %}
-      <li>You haven't submitted any solutions yet.</li>
-    {% endfor %}
-  </ul>
+  <!-- Submissions Table -->
+  <div class="card">
+    <div class="card-header">Your Submissions</div>
+    <div class="table-responsive">
+      <table class="table table-striped mb-0">
+        <thead>
+          <tr>
+            <th>Problem</th>
+            <th>Lang</th>
+            <th>Status</th>
+            <th>Details</th>
+            <th>When</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in submissions %}
+            <tr>
+              <td>{{ s.problem.title }}</td>
+              <td>{{ s.get_language_display }}</td>
+              <td>
+                {% if s.status == 'A' %}
+                  <span class="badge bg-success">{{ s.get_status_display }}</span>
+                {% elif s.status == 'R' %}
+                  <span class="badge bg-danger">{{ s.get_status_display }}</span>
+                {% elif s.status == 'T' %}
+                  <span class="badge bg-warning text-dark">{{ s.get_status_display }}</span>
+                {% else %}
+                  <span class="badge bg-secondary">{{ s.get_status_display }}</span>
+                {% endif %}
+              </td>
+              <td>
+                {% if s.verdict_details %}
+                  <pre class="mb-0">{{ s.verdict_details }}</pre>
+                {% else %}
+                  &ndash;
+                {% endif %}
+              </td>
+              <td>{{ s.submitted_at|naturaltime }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="5" class="text-center">You haven't submitted any solutions yet.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 {% endblock %}
