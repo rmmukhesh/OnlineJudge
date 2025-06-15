@@ -1,0 +1,4 @@
+Retrieving logs...
+Logs were saved to /Users/mukhesh/Desktop/OnlineJudge/my_project/.elasticbeanstalk/logs/250614_172742
+Logs were saved to /Users/mukhesh/Desktop/OnlineJudge/my_project/.elasticbeanstalk/logs/250614_172742
+Updated symlink at /Users/mukhesh/Desktop/OnlineJudge/my_project/.elasticbeanstalk/logs/latest

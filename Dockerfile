@@ -15,16 +15,16 @@ RUN pip install --no-cache-dir -r requirements.txt
 # App code
 COPY . .
 
-# Build‑time dummy secret so no settings errors
+# Build-time vars so collectstatic won’t crash
 ENV DJANGO_SETTINGS_MODULE=my_project.settings \
     SECRET_KEY="docker-build-secret" \
     DEBUG="True" \
     ALLOWED_HOSTS="*"
 
-# ← remove this step (powered by entrypoint instead)
-# RUN python manage.py collectstatic --no-input
+# Collect static into STATIC_ROOT
+RUN python manage.py collectstatic --no-input
 
-# Entrypoint
+# Entrypoint invocation
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
