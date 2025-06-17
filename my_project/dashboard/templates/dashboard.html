@@ -6,19 +6,35 @@
 {% block content %}
   <h1 class="mb-4">Dashboard</h1>
 
-  <!-- Problems List -->
+  <!-- Problems List as Table -->
   <div class="card mb-4">
     <div class="card-header">Available Problems</div>
-    <ul class="list-group list-group-flush">
-      {% for p in problems %}
-        <li class="list-group-item">
-          <a href="{% url 'dashboard:problem_detail' p.id %}">{{ p.title }}</a>
-          <span class="badge bg-secondary float-end">{{ p.created_at|date:"M d, Y" }}</span>
-        </li>
-      {% empty %}
-        <li class="list-group-item">No problems have been created yet.</li>
-      {% endfor %}
-    </ul>
+    <div class="card-body p-0">
+      <table class="table table-flush mb-0">
+        <thead>
+          <tr>
+            <th scope="col">Problem Title</th>
+            <th scope="col" class="text-end">Created On</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in problems %}
+            <tr>
+              <td>
+                <a href="{% url 'dashboard:problem_detail' p.id %}">{{ p.title }}</a>
+              </td>
+              <td class="text-end">
+                <span class="badge bg-secondary">{{ p.created_at|date:"M d, Y" }}</span>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="2" class="text-center">No problems have been created yet.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <!-- Submissions Table -->
@@ -28,6 +44,7 @@
       <table class="table table-striped mb-0">
         <thead>
           <tr>
+            <th>Submission ID</th>
             <th>Problem</th>
             <th>Lang</th>
             <th>Status</th>
@@ -38,7 +55,22 @@
         <tbody>
           {% for s in submissions %}
             <tr>
-              <td>{{ s.problem.title }}</td>
+              <td>
+                <a
+                  href="{% url 'dashboard:submission_detail' s.pk %}"
+                  class="text-decoration-none"
+                >
+                  #{{ s.pk }}
+                </a>
+              </td>
+              <td>
+                <a
+                  href="{% url 'dashboard:problem_detail' s.problem.pk %}"
+                  class="text-decoration-none"
+                >
+                  {{ s.problem.title }}
+                </a>
+              </td>
               <td>{{ s.get_language_display }}</td>
               <td>
                 {% if s.status == 'A' %}

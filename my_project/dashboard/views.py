@@ -1,5 +1,5 @@
 import subprocess, tempfile, os
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
@@ -35,9 +35,6 @@ def submit_solution(request, pk):
 # Helper to execute code and compare outputs
 
 def run_testcases(problem, code_text, language):
-    verdict = 'A'
-    details = ''
-
     suffix = '.py' if language == 'PY' else '.cpp'
     with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as src:
         src.write(code_text.encode())
@@ -54,39 +51,39 @@ def run_testcases(problem, code_text, language):
                 timeout=5
             )
             if compile_proc.returncode != 0:
-                verdict = 'E'
-                details = f"Compilation error"
-                return verdict, details
+                return 'E', f"Compilation error"
 
         run_cmd = ['python3', src_name] if language == 'PY' else [exe_path]
  
-        for tc in problem.testcases.filter(is_public=False):
-            proc = subprocess.run(
-                run_cmd,
-                input=tc.input_data.encode(),
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                timeout=2
-            )
+        all_cases = problem.testcases.all().order_by('id')
+        for idx, tc in enumerate(all_cases, start=1):
+            try:    
+                proc = subprocess.run(
+                    run_cmd,
+                    input=tc.input_data.encode(),
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    timeout=2
+                )
+            except subprocess.TimeoutExpired:
+                return 'T', f"Time Limit Exceeded on test case #{idx}"
+
             actual   = proc.stdout.decode().strip()
             expected = tc.expected_output.strip()
 
             if proc.returncode != 0:
-                verdict = 'E'
-                details = f"Runtime error on TC #{tc.id}"
-                break
+                return 'E', f"Runtime error on test case #{idx}"
             if actual != expected:
-                verdict = 'R'
-                details = f"Wrong Answer on Test Case {tc.id}"
-                break
-
-    except subprocess.TimeoutExpired:
-        verdict = 'T'
-        details = f"Time Limit Exceeded on Test Case {tc.id}"
+                return 'R', f"Wrong answer on test case #{idx}"
+    
+        return 'A', ''
 
     finally:
         os.remove(src_name)
         if exe_path and os.path.exists(exe_path):
             os.remove(exe_path)
 
-    return verdict, details
+@login_required
+def submission_detail(request, pk):
+    sub = get_object_or_404(Submission, pk=pk, user=request.user)
+    return render(request, 'submission_detail.html', {'submission': sub})

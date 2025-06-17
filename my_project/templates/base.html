@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}MyJudge{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS (CDN) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Theme variables and custom styles -->
+  <style>
+    :root {
+      --theme-bg: #ffffff;
+      --theme-fg: #212529;
+      --theme-nav-bg: #343a40;
+      --theme-card-bg: #f8f9fa;
+      --theme-row-bg: #ffffff;
+      --theme-link-color: #0d6efd;
+      --theme-link-hover: #024eba;
+    }
+    [data-theme="dark"] {
+      --theme-bg: #121212;
+      --theme-fg: #e1e1e1;
+      --theme-nav-bg: #212529;
+      --theme-card-bg: #1e1e1e;
+      --theme-row-bg: #1a1a1a;
+      --theme-link-color: #66b2ff;
+      --theme-link-hover: #338cff;
+    }
+
+    /* Base styles */
+    body { background-color: var(--theme-bg); color: var(--theme-fg); transition: background-color .3s, color .3s; }
+    .navbar { background-color: var(--theme-nav-bg) !important; }
+    .navbar-text, .nav-link, .navbar-brand { color: #fff !important; }
+    .nav-link:hover { color: var(--theme-link-hover) !important; }
+
+    /* Default link color for non-table links */
+    .container a:not(table a) { color: var(--theme-link-color) !important; }
+
+    .card { background-color: var(--theme-card-bg) !important; color: var(--theme-fg) !important; }
+
+    /* Always white background and black text for code blocks */
+    pre { background: #fff !important; color: #000 !important; padding:0; margin:0; border:none; }
+    code { background: transparent !important; color: inherit !important; }
+
+    /* Table structure */
+    .table { background: transparent !important; color: var(--theme-fg) !important; }
+    .table thead th { background: var(--theme-nav-bg) !important; color: #fff !important; }
+    .table tbody tr { background: var(--theme-row-bg) !important; }
+    .table tbody tr:nth-child(even) { background: var(--theme-card-bg) !important; }
+    .table td, .table th { border-color: #444 !important; }
+
+    /* Override table links: force black across all tables */
+    table.table a, table.table a:visited {
+      color: #000000 !important;
+      font-weight: bold;
+      text-decoration: none !important;
+    }
+    table.table a:hover {
+      color: #333333 !important;
+      text-decoration: underline !important;
+    }
+
+    /* Details cell always white bg */
+    .submission-details, .alert-secondary { background: #fff !important; color: #000 !important; border: none !important; padding: 0 !important; margin: 0 !important; }
+  </style>
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg mb-4">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/dashboard/">MyJudge</a>
+      <div class="ms-auto d-flex align-items-center">
+        <!-- Dark mode switch -->
+        <div class="form-check form-switch me-3">
+          <input class="form-check-input" type="checkbox" id="themeToggle" aria-label="Toggle dark mode">
+          <label class="form-check-label" for="themeToggle">Dark</label>
+        </div>
+        <ul class="navbar-nav">
+          {% if user.is_authenticated %}
+            <li class="nav-item"><span class="navbar-text me-3">Hello, {{ user.username }}</span></li>
+            <li class="nav-item"><a class="nav-link" href="/auth/logout/">Logout</a></li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="/auth/login/">Login</a></li>
+            <li class="nav-item"><a class="nav-link" href="/auth/register/">Sign Up</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!-- Flash messages -->
+    {% if messages %}{% for msg in messages %}
+      <div class="alert alert-{{ msg.tags }} alert-dismissible fade show" role="alert">
+        {{ msg }} <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endfor %}{% endif %}
+
+    {% block content %}{% endblock %}
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const toggle = document.getElementById('themeToggle');
+    const root = document.documentElement;
+    const saved = localStorage.getItem('theme') || 'light';
+    root.setAttribute('data-theme', saved);
+    toggle.checked = saved === 'dark';
+    toggle.addEventListener('change', () => {
+      const theme = toggle.checked ? 'dark' : 'light';
+      root.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+    });
+  </script>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

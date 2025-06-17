@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Submission #{{ submission.pk }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <div class="row mb-3">
+    <div class="col">
+      <a href="{% url 'dashboard:dashboard' %}" class="btn btn-outline-secondary">
+        ← Back to Dashboard
+      </a>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">
+        Submission #{{ submission.pk }} —
+        <small class="text-light">{{ submission.problem.title }}</small>
+      </h5>
+    </div>
+    <div class="card-body">
+
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <strong>User:</strong> {{ submission.user.username }}
+        </div>
+        <div class="col-md-4">
+          <strong>Language:</strong> {{ submission.get_language_display }}
+        </div>
+        <div class="col-md-4 text-md-right">
+          <strong>When:</strong>
+          {{ submission.submitted_at|date:"M d, Y H:i:s" }}
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col">
+          <strong>Verdict:</strong>
+          {% if submission.status == 'A' %}
+            Accepted
+          {% elif submission.status == 'R' %}
+            Wrong Answer
+          {% elif submission.status == 'E' %}
+            Error
+          {% else %}
+            Time Limit Exceeded
+          {% endif %}
+        </div>
+      </div>
+
+      {% if submission.verdict_details %}
+      <div class="row mb-3">
+        <div class="col">
+          <div class="alert alert-light border">
+            <strong>Details:</strong><br>
+            {{ submission.verdict_details }}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="row">
+        <div class="col">
+          <strong>Your Code:</strong>
+          <pre class="bg-light border rounded p-3"><code>{{ submission.code|escape }}</code></pre>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
