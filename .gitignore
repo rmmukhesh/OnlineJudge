@@ -1,3 +1,11 @@
+myenv/
 
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
+__pycache__/
+*.py[cod]
+
+db.sqlite3
+
+staticfiles/
+media/
+
+*.log
