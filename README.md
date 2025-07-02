@@ -4,7 +4,7 @@ A full-stack Django-based Online Judge platform for coding contests, problem-sol
 
 ## 🚀 Live Demo
 
-Access the deployed platform here: [http://13.127.217.250:8000/login/](http://13.127.217.250:8000/login/)
+Access the deployed platform here: [http://13.127.217.250:8000/auth/login/](http://13.127.217.250:8000/auth/login/)
 > ⚠️ Note: The demo may be offline if the EC2 instance is stopped.
 
 ---
@@ -123,7 +123,14 @@ python manage.py createsuperuser
 
 ## 🌐 AWS Deployment
 
-The platform is deployed on AWS EC2 for scalability and reliability. See [deployment instructions](docs/deployment.md) for details.
+The platform is deployed on AWS EC2 for scalability and reliability.
+
+### Deployment Summary:
+- Launch an EC2 instance (Ubuntu)
+- Install Docker
+- Clone the repository
+- Set up `.env` file
+- Run Docker build and start the container
 
 ---
 
