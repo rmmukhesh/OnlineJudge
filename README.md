@@ -1,6 +1,6 @@
 # Online Judge Platform
 
-![MIT License](https://img.shields.io/badge/license-MIT-green)
+[![MIT License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 
 A full-stack Django-based Online Judge platform for coding contests, problem-solving, and automated code evaluation.
 
