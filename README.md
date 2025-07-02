@@ -1,5 +1,7 @@
 # Online Judge Platform
 
+![MIT License](https://img.shields.io/badge/license-MIT-green)
+
 A full-stack Django-based Online Judge platform for coding contests, problem-solving, and automated code evaluation.
 
 ## 🚀 Live Demo
@@ -24,7 +26,7 @@ Access the deployed platform here: [http://13.127.217.250:8000/auth/login/](http
 - **Admin Interface:**
   Custom Django admin for managing problems, users, and system settings.
 - **Responsive UI:**
-   Modern interface with dark/light themes, mobile friendly design.
+   Modern interface with dark/light themes and a mobile friendly design.
 - **Scalable Deployment:**
   Dockerized for easy setup; deployed on AWS EC2 for reliability and horizontal scaling.
 
