@@ -95,7 +95,12 @@ python manage.py runserver
 
 ### Access the app
 
-Visit [http://localhost:8000/](http://localhost:8000/) in your browser.
+After starting the development server, you can access:
+
+- **User Login Page:** [http://localhost:8000/auth/login/](http://localhost:8000/auth/login/)
+- **Admin Dashboard:** [http://localhost:8000/admin/](http://localhost:8000/admin/)
+
+> ⚠️ Make sure you’ve created a superuser using `python manage.py createsuperuser` to access the admin panel.
 
 ---
 
