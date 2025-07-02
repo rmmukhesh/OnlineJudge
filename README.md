@@ -11,21 +11,21 @@ Access the deployed platform here: [http://13.127.217.250:8000/login/](http://13
 
 ## 📝 Features
 
-- **User Authentication**
+- **User Authentication:**
   Secure registration and login with CSRF protection and hashed passwords.
-- **Problem Management**
+- **Problem Management:**
   Add, edit, and browse coding problems with detailed descriptions and test cases.
-- **Code Submission Engine** 
+- **Code Submission Engine:** 
   - Supports multiple programming languages (C++, Python)
   - Secure sandboxed execution with timeouts and resource limits
   - Automated evaluation and real-time verdicts (Accepted, Wrong Answer, Time Limit Exceeded, etc.)
-- **Submission Tracking**
+- **Submission Tracking:**
   View past submissions, verdicts, and test case results.
-- **Admin Interface**
+- **Admin Interface:**
   Custom Django admin for managing problems, users, and system settings.
-- **Responsive UI**
+- **Responsive UI:**
    Modern interface with dark/light themes, mobile friendly design.
-- **Scalable Deployment**
+- **Scalable Deployment:**
   Dockerized for easy setup; deployed on AWS EC2 for reliability and horizontal scaling.
 
 ---
