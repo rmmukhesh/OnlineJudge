@@ -2,7 +2,7 @@
 
 [![MIT License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 
-A full-stack Django-based Online Judge platform for coding contests, problem-solving, and automated code evaluation.
+A full-stack Django-based Online Judge platform for coding practice, problem-solving, and automated code evaluation.
 
 ## 🚀 Live Demo
 
@@ -162,5 +162,5 @@ This project is licensed under the [MIT License](./LICENSE).
 
 ## 👤 Author
 
-- **[Mukhesh RM](https://www.linkedin.com/in/mukhesh-rm-4a2a25322/)**
+- **[Mukhesh RM](https://www.linkedin.com/in/rmmukhesh/)**
 - [rmmukhesh@gmail.com](mailto:rmmukhesh@gmail.com)
