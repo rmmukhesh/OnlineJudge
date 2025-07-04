@@ -11,6 +11,15 @@ Access the deployed platform here: [http://13.127.217.250:8000/auth/login/](http
 
 ---
 
+### 📺 Demo Video
+
+Watch the full walkthrough of the platform here:  
+[![Watch the demo](https://img.youtube.com/vi/yG72KlYpnA4/0.jpg)](https://www.youtube.com/watch?v=yG72KlYpnA4)
+> 📝 Covers login, problem solving, code evaluation, UI themes, and admin access.
+> 💡 Tip: Watch at 1.25x or 1.5x speed for a faster overview!
+
+---
+
 ## 📝 Features
 
 - **User Authentication:**
