@@ -24,8 +24,6 @@ Watch the full walkthrough of the platform here:
 
 - **User Authentication:**
   Secure registration and login with CSRF protection and hashed passwords.
-- **Problem Management:**
-  Add, edit, and browse coding problems with detailed descriptions and test cases.
 - **Code Submission Engine:** 
   - Supports multiple programming languages (C++, Python)
   - Secure sandboxed execution with timeouts and resource limits
@@ -33,7 +31,7 @@ Watch the full walkthrough of the platform here:
 - **Submission Tracking:**
   View past submissions, verdicts, and test case results.
 - **Admin Interface:**
-  Custom Django admin for managing problems, users, and system settings.
+  Manage coding problems, users, and system settings via the Django admin panel.
 - **Responsive UI:**
    Modern interface with dark/light themes and a mobile friendly design.
 - **Scalable Deployment:**
