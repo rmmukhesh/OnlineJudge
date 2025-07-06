@@ -6,7 +6,7 @@ A full-stack Django-based Online Judge platform for coding practice, problem-sol
 
 ## 🚀 Live Demo
 
-Access the deployed platform here: [http://13.127.217.250:8000/auth/login/](http://13.127.217.250:8000/auth/login/)
+Access the deployed platform here: [http://15.206.87.114:8000/auth/login/](http://15.206.87.114:8000/auth/login/)
 > ⚠️ Note: The demo may be offline if the EC2 instance is stopped.
 
 ---
